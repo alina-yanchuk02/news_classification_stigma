@@ -5,6 +5,8 @@
 
 import json
 
+from utils import try_request
+
 from search import search
 
 from web_scraping import get_data

@@ -10,6 +10,46 @@ from bs4 import BeautifulSoup
 
 from newspaper import Article
 
+# -------------- Main functions ------
+
+def get_data(item):
+
+    terms = ["Esquizofrenia", "esquizofrenia", "Esquizofrénico", "esquizofrénico", "Esquizofrenico", "esquizofrenico", "Esquizofrénica", "esquizofrénica", "Esquizofrenica", "esquizofrenica", "Esquizofrénicas", "esquizofrénicas", "Esquizofrenicas", "esquizofrenicas", "Esquizofrénicos", "esquizofrénicos", "Esquizofrenicos", "esquizofrenicos", "Esquizofrenicamente", "esquizofrenicamente", "Esquizofrenizar", "esquizofrenizar"]
+    data = {}
+
+    try:
+        page = Article(item["linkToOriginalFile"], language="pt")
+        page.download()
+    except: print("Error in scraping: can't get the page")
+
+    try:
+        page.parse()
+        page.nlp()
+        content = page.text
+        if any(term in item["title"] for term in terms) or any(term in content for term in terms):
+            data["content"] = content
+            data["headline"] = item["title"]
+            data["journal"] = item["journal"]
+            return data         
+    except:
+        print("Can't scap. | " + item["title"])
+
+    return None
+
+
+
+## Scraping of HTML pages by url
+
+# -------------- Imports -------------
+
+import json
+
+from utils import try_request
+
+from bs4 import BeautifulSoup
+
+from newspaper import Article
+
 # -------------- Global variables -------------
 
 terms = ["esquizofrenia", "esquizofrénico", "esquizfrenico", "esquizofrénica", "esquizofrenica", "esquizofrénicas", "esquizofrenicas", "esquizofrénicos", "esquizofrenicos", "esquizofrenicamente", "esquizofrenizar"]
@@ -103,3 +143,34 @@ def scrap_publico(headline, soup):
     else: return None      
 
   
+
+"""
+# -------------- Using newspaper3k ------
+
+from newspaper import Article
+ 
+#A new article from TOI
+url = "https://arquivo.pt/noFrame/replay/20010131053801id_/http://www.record.pt/shownews.asp?id=74299"
+ 
+#For different language newspaper refer above table
+toi_article = Article(url, language="en") # en for English
+ 
+#To download the article
+toi_article.download()
+ 
+#To parse the article
+toi_article.parse()
+ 
+#To perform natural language processing ie..nlp
+toi_article.nlp()
+ 
+#To extract title
+print("Article's Title:")
+print(toi_article.title)
+print("n")
+ 
+#To extract text
+print("Article's Text:")
+print(toi_article.text)
+print("n")
+"""

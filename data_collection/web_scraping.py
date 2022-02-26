@@ -4,6 +4,8 @@
 
 import json
 
+from utils import try_request
+
 from newspaper import Article
 
 # -------------- Main functions ------
