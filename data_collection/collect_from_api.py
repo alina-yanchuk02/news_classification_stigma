@@ -26,7 +26,7 @@ def collect():
 
     terms = ["esquizofrenia", "esquizofrénico", "esquizofrenico", "esquizofrénica", "esquizofrenica", "esquizofrénicas", "esquizofrenicas", "esquizofrénicos", "esquizofrenicos", "esquizofrenicamente", "esquizofrenizar"]
 
-    journals = ["publico.pt", "www.publico.pt", "jornal.publico.pt", "dossiers.publico.pt", "desporto.publico.pt", "www.publico.clix.pt", "digital.publico.pt", "observador.pt", "www.dn.pt", "dn.sapo.pt", "www.dn.sapo.pt", "expresso.pt", "aeiou.expresso.pt", "expresso.sapo.pt", "www.correiodamanha.pt", "www.cmjornal.xl.pt", "www.cmjornal.pt", "www.jn.pt", "jn.pt", "jn.sapo.pt"]
+    journals = ["publico.pt", "www.publico.pt", "jornal.publico.pt", "dossiers.publico.pt", "desporto.publico.pt", "www.publico.clix.pt", "digital.publico.pt", "blogues.publico.pt", "economia.publico.pt", "m.publico.pt", "ultimahora.publico.pt", "observador.pt", "www.dn.pt", "dn.sapo.pt", "www.dn.sapo.pt", "expresso.pt", "aeiou.expresso.pt", "expresso.sapo.pt", "www.correiodamanha.pt", "www.cmjornal.xl.pt", "www.cmjornal.pt", "www.jn.pt", "jn.pt", "jn.sapo.pt"]
 
     total_urls = 0
 
@@ -128,12 +128,24 @@ def deduplicate(data):
                     if entry["content"] in entry_temp["content"]: 
                         duplicate = True
                         break
-                elif len(entry_temp["content"]) < len(entry["content"]): 
+                    elif entry["content"][0:300] in entry_temp["content"]: 
+                        duplicate = True
+                        break
+                if len(entry_temp["content"]) < len(entry["content"]): 
                     if entry_temp["content"] in entry["content"]: 
                         duplicate = True
                         break
-                else: 
-                    if entry_temp["content"]==entry["content"]: 
+                    elif entry_temp["content"][0:300] in entry["content"]: 
+                        duplicate = True
+                        break
+                if entry_temp["content"] == entry["content"]: 
+                        duplicate = True
+                        break
+                if entry_temp["content"][0:300] == entry["content"]: 
+                        duplicate = True
+                        break
+                if len(entry["headline"]) > 30:
+                    if entry["headline"] == entry_temp["headline"]: 
                         duplicate = True
                         break
                         
