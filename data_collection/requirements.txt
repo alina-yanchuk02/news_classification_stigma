@@ -1,4 +1,2 @@
-pip3 install requests
-pip3 install newspaper3k
-
-# RUN: python3 collect_from_api.py
+requests == 2.27.1
+newspaper3k == 0.2.8
