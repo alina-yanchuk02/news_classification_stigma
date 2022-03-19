@@ -13,4 +13,15 @@ To execute, run:
 
 ### Preprocessing
 
-The preprocessing stage is organized in a Jupyter Notebook, with the relevant steps described in the same. The data file used is a sample from the original file that will be retrieved in the Data Collection step.
+The preprocessing stage is organized in a Jupyter Notebook, with the relevant steps described in the same. The data file used is the labeled data returned in the Data Collection step.
+
+### Classification
+
+The classification stage is organized in a Jupyter Notebook, with the relevant steps described in the same. The data file used is the cleaned data returnned in the Preprocessing step. For now, it has only 6 basic machine learning algorithms, their hyper-parameters tuning and evaluation metrics.
+
+   - Logistic Regression
+   - Linear SVC
+   - Multinomial Naive Bayes
+   - K-Nearest Neighbors
+   - Random Forest
+   - XGBoost
