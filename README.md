@@ -11,11 +11,17 @@ To execute, run:
 
     python3 collect_from_api.py 
 
-### Preprocessing
+### 1. Preprocessing
 
-The preprocessing stage is organized in a Jupyter Notebook, with the relevant steps described in the same. The data file used is the file with the mannualy labeled data returned in the Data Collection step.
+The preprocessing stage is organized in a Jupyter Notebook, with the relevant steps described in the same. The data file used is the file returned in the Data Collection step. 
+ 
+ Note: this data file is already manually labeled and also got some manual processing (after being returned in the Data Collection stage) to fully prepare it for the next steps.
 
-### Classification
+### 2. Exploratory Data Analysis
+
+The Exploratory Data Analysis stage is organidez in a Jupyter Notebook, with the relevant steps described in the same. The data file used is the file with the cleaned and prepared (for EDA) data returned in the Preprocessing step. This step is not important for the main process (Classification) but was done to obtain initial insights about the data.
+
+### 3. Classification
 
 The classification stage is organized in a Jupyter Notebook, with the relevant steps described in the same. The data file used is the file with the cleaned data returned in the Preprocessing step. For now, it has only 6 basic machine learning algorithms, their hyper-parameters tuning and evaluation metrics.
 
