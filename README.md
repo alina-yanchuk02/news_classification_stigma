@@ -23,7 +23,7 @@ The Exploratory Data Analysis stage is organidez in a Jupyter Notebook, with the
 
 ### 3. Classification
 
-The classification stage is organized in a Jupyter Notebook, with the relevant steps described in the same. The data file used is the file with the cleaned data returned in the Preprocessing step. For now, it has only 6 basic machine learning algorithms, their hyper-parameters tuning and evaluation metrics.
+The classification stage is organized in a Jupyter Notebook, with the relevant steps described in the same. The data file used is the file with the cleaned data returned in the Preprocessing step. For now, it has only 6 basic machine learning algorithms and 1 simple neural network, their hyper-parameters tuning (except CNN) and evaluation metrics.
 
    - Logistic Regression
    - Linear SVC
@@ -31,3 +31,4 @@ The classification stage is organized in a Jupyter Notebook, with the relevant s
    - K-Nearest Neighbors
    - Random Forest
    - XGBoost
+   - Convolutional Neural Network (with Word2Vec PT 100D)
