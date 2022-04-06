@@ -17,6 +17,8 @@ import time
 
 import csv
 
+import pandas as pd
+
 # -------------- Main functions ------
     
 ## Collect URLs from API, perform web scraping and write to CSV
@@ -24,9 +26,8 @@ def collect():
 
     urls_to_scrap = {}
 
-    terms = ["esquizofrenia", "esquizofrénico", "esquizofrenico", "esquizofrénica", "esquizofrenica", "esquizofrénicas", "esquizofrenicas", "esquizofrénicos", "esquizofrenicos", "esquizofrenicamente", "esquizofrenizar"]
-
-    journals = ["publico.pt", "www.publico.pt", "jornal.publico.pt", "dossiers.publico.pt", "desporto.publico.pt", "www.publico.clix.pt", "digital.publico.pt", "blogues.publico.pt", "economia.publico.pt", "m.publico.pt", "ultimahora.publico.pt", "observador.pt", "www.dn.pt", "dn.sapo.pt", "www.dn.sapo.pt", "expresso.pt", "aeiou.expresso.pt", "expresso.sapo.pt", "www.correiodamanha.pt", "www.cmjornal.xl.pt", "www.cmjornal.pt", "www.jn.pt", "jn.pt", "jn.sapo.pt"]
+    terms = ["esquizofrenia", "esquizofrénico", "esquizofrenico", "esquizofrénica", "esquizofrenica", "esquizofrénicas", "esquizofrenicas", "esquizofrénicos", "esquizofrenicos", "esquizofrenicamente", "esquizofrenizar", "psicose", "psicótica", "psicotica", "psicóticas", "psicoticas", "psicótico", "psicotico", "psicóticos", "psicóticos"]
+    journals = ["publico.pt", "www.publico.pt", "jornal.publico.pt", "dossiers.publico.pt", "desporto.publico.pt", "www.publico.clix.pt", "digital.publico.pt", "blogues.publico.pt", "economia.publico.pt", "m.publico.pt", "ultimahora.publico.pt", "observador.pt", "www.dn.pt", "dn.sapo.pt", "www.dn.sapo.pt", "expresso.pt", "aeiou.expresso.pt", "expresso.sapo.pt", "www.correiodamanha.pt", "www.cmjornal.xl.pt", "www.cmjornal.pt", "www.jn.pt", "jn.pt", "jn.sapo.pt", "abola.pt", "www.abola.pt", "abola.pt:80", "visaoonline.clix.pt:80", "visao.clix.pt:80", "aeiou.visao.pt", "visao.sapo.pt", "www.sabado.pt", "www.sabado.pt:80", "www.sabado.xl.pt", "www.sabado.xl.pt:80", "sabado.pt"]
 
     total_urls = 0
 
@@ -92,7 +93,7 @@ def collect():
     #with open('output_scraping') as scraping_file: data = json.load(scraping_file)
     #scraping_file.close()
 
-    data = deduplicate(data)
+    data = deduplicate(data, terms)
 
     write_to_file(data)
 
@@ -105,7 +106,7 @@ def collect():
 ## Write to csv
 def write_to_file(data):
 
-    csv_columns = ['journal','headline','content','authors','publishDate','archiveDate','linkToArchive']
+    csv_columns = ['label','journal','headline','content','authors','publishDate','archiveDate','linkToArchive']
 
     with open("data.csv", 'w') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=csv_columns)
@@ -115,8 +116,8 @@ def write_to_file(data):
     csvfile.close()
 
 
-## Remove duplicate news, by content
-def deduplicate(data):
+## Remove duplicate news, by content or headline
+def deduplicate(data, terms):
   
     temp = []
     duplicate = False
@@ -124,28 +125,32 @@ def deduplicate(data):
     for entry in data:
         if len(temp) != 0:
             for entry_temp in temp:
-                if len(entry["content"]) < len(entry_temp["content"]): 
-                    if entry["content"] in entry_temp["content"]: 
+                equal = 0
+                if len(entry["content"]) <= len(entry_temp["content"]): # if one string is smaller or equal
+                    if entry["content"] in entry_temp["content"]: # check if substring is in the string
                         duplicate = True
                         break
-                    elif entry["content"][0:300] in entry_temp["content"]: 
-                        duplicate = True
-                        break
-                if len(entry_temp["content"]) < len(entry["content"]): 
+                if len(entry_temp["content"]) <= len(entry["content"]): # if the other string is smaller or equal
                     if entry_temp["content"] in entry["content"]: 
                         duplicate = True
                         break
-                    elif entry_temp["content"][0:300] in entry["content"]: 
+                text_part = entry["content"].split('.') # if the sencence with one of the target terms (in the list terms) and the two sentences before and the two sentences after the target sentence of one string are in the second string
+                target = next((s for s in text_part if any(term in s for term in terms)), "")
+                if target!="":
+                    target_index = text_part.index(target)
+                    if target_index-1>=0: 
+                        if text_part[target_index-1] in entry_temp["content"]: equal+=1
+                    if target_index-2>=0: 
+                        if text_part[target_index-2] in entry_temp["content"]: equal+=1
+                    if len(text_part)>target_index+1: 
+                        if text_part[target_index+1] in entry_temp["content"]: equal+=1
+                    if len(text_part)>target_index+2: 
+                        if text_part[target_index+2] in entry_temp["content"]: equal+=1
+                    if equal==4:
                         duplicate = True
                         break
-                if entry_temp["content"] == entry["content"]: 
-                        duplicate = True
-                        break
-                if entry_temp["content"][0:300] == entry["content"]: 
-                        duplicate = True
-                        break
-                if len(entry["headline"]) > 30:
-                    if entry["headline"] == entry_temp["headline"]: 
+                if len(entry["headline"]) > 30: # if title has more than 30 characters
+                    if entry["headline"] == entry_temp["headline"]: # check if the titles are the same
                         duplicate = True
                         break
                         
@@ -155,16 +160,18 @@ def deduplicate(data):
 
     return temp
 
-
 ## Group and print results
 def results(data):
 
-    publico = ["publico.pt", "www.publico.pt", "jornal.publico.pt", "dossiers.publico.pt", "desporto.publico.pt", "www.publico.clix.pt", "digital.publico.pt"]
+    publico = ["publico.pt", "www.publico.pt", "jornal.publico.pt", "dossiers.publico.pt", "desporto.publico.pt", "www.publico.clix.pt", "digital.publico.pt", "blogues.publico.pt", "economia.publico.pt", "m.publico.pt", "ultimahora.publico.pt"]
     observador = ["observador.pt"]
     dn = ["www.dn.pt", "dn.sapo.pt", "www.dn.sapo.pt"]
     expresso = ["expresso.pt", "aeiou.expresso.pt", "expresso.sapo.pt"]
-    cm = ["www.correiodamanha.pt", "www.cmjornal.xl.pt", "www.cmjornal.pt"]
+    cm = ["www.correiomanha.pt", "www.correiodamanha.pt", "www.cmjornal.xl.pt", "www.cmjornal.pt"]
     jn = ["www.jn.pt", "jn.pt", "jn.sapo.pt"]
+    abola = ["abola.pt", "www.abola.pt", "abola.pt:80"]
+    visao = ["visaoonline.clix.pt:80", "visao.clix.pt:80", "aeiou.visao.pt", "visao.sapo.pt"]
+    sabado = ["www.sabado.pt", "www.sabado.pt:80", "www.sabado.xl.pt", "www.sabado.xl.pt:80", "sabado.pt"]
 
     publico_count = 0
     observador_count = 0
@@ -172,6 +179,9 @@ def results(data):
     expresso_count = 0
     cm_count = 0
     jn_count = 0
+    abola_count = 0
+    visao_count = 0
+    sabado_count = 0
 
     for entry in data:
         if entry["journal"] in publico: publico_count += 1
@@ -180,6 +190,9 @@ def results(data):
         elif entry["journal"] in expresso: expresso_count += 1
         elif entry["journal"] in cm: cm_count += 1
         elif entry["journal"] in jn: jn_count += 1
+        elif entry["journal"] in abola: abola_count+=1
+        elif entry["journal"] in visao: visao_count += 1
+        elif entry["journal"] in sabado: sabado_count += 1
     
     print("Extracted " + str(len(data)) + " news.\n")
     print("Público -> " + str(publico_count))
@@ -188,6 +201,9 @@ def results(data):
     print("Expresso -> " + str(expresso_count))
     print("CM -> " + str(cm_count))
     print("JN -> " + str(jn_count))
+    print("A Bola -> " + str(abola_count))
+    print("Visão -> " + str(visao_count))
+    print("Sábado -> " + str(sabado_count))
 
 
 

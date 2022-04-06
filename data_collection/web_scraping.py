@@ -13,7 +13,7 @@ from newspaper import Article
 ## Web scraping and filtering
 def get_data(item):
 
-    terms = ["Esquizofrenia", "esquizofrenia", "Esquizofrénico", "esquizofrénico", "Esquizofrenico", "esquizofrenico", "Esquizofrénica", "esquizofrénica", "Esquizofrenica", "esquizofrenica", "Esquizofrénicas", "esquizofrénicas", "Esquizofrenicas", "esquizofrenicas", "Esquizofrénicos", "esquizofrénicos", "Esquizofrenicos", "esquizofrenicos", "Esquizofrenicamente", "esquizofrenicamente", "Esquizofrenizar", "esquizofrenizar"]
+    terms = ["Esquizofrenia", "esquizofrenia", "Esquizofrénico", "esquizofrénico", "Esquizofrenico", "esquizofrenico", "Esquizofrénica", "esquizofrénica", "Esquizofrenica", "esquizofrenica", "Esquizofrénicas", "esquizofrénicas", "Esquizofrenicas", "esquizofrenicas", "Esquizofrénicos", "esquizofrénicos", "Esquizofrenicos", "esquizofrenicos", "Esquizofrenicamente", "esquizofrenicamente", "Esquizofrenizar", "esquizofrenizar", "psicose", "Psicose", "psicótica", "Psicótica", "psicotica", "Psicotica", "psicóticas", "Psicóticas", "psicoticas", "Psicoticas", "psicótico", "Psicótico", "psicotico", "Psicotico", "psicóticos", "Psicóticos", "psicóticos", "Psicoticos"]
     data = {}
 
     try:
@@ -31,6 +31,7 @@ def get_data(item):
         publish_date = page.publish_date
 
         if any(term in title for term in terms) or any(term in content for term in terms): # if any term in news headline or content
+            data["label"] = ""
             data["headline"] = title
             data["journal"] = item["journal"]
             data["content"] = content
@@ -44,7 +45,7 @@ def get_data(item):
             return data   
 
     except:
-        print("Can't scap. | " + item["linkToArchive"])
+        print("Can't scap. | " + item["linkToArchive"] + " | " + str(item["tstamp"]))
 
     return None
 
