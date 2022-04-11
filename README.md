@@ -13,17 +13,17 @@ To execute, run:
 
 ### 1. Preprocessing
 
-The preprocessing stage is organized in a Jupyter Notebook, with the relevant steps described in the same. The data file used is the file returned in the Data Collection step. 
+The Preprocessing stage is organized in a Jupyter Notebook, with the relevant steps described in the same. The data file used is the file returned in the Data Collection step. 
  
  Note: this data file is already manually labeled and also got some manual processing (after being returned in the Data Collection stage) to fully prepare it for the next steps.
 
 ### 2. Exploratory Data Analysis
 
-The Exploratory Data Analysis stage is organidez in a Jupyter Notebook, with the relevant steps described in the same. The data file used is the file with the cleaned and prepared (for EDA) data returned in the Preprocessing step. This step is not important for the main process (Classification) but was done to obtain initial insights about the data.
+The Exploratory Data Analysis stage is organized in a Jupyter Notebook, with the relevant steps described in the same. The data file used is the file with the cleaned and prepared (for EDA) data returned in the Preprocessing step. This step is not important for the main process (Classification) but was done to obtain initial insights about the data.
 
 ### 3. Classification
 
-The classification stage is organized in 2 Jupyter Notebooks, with the relevant steps described in the same. The data file used is the file with the cleaned data returned in the Preprocessing step. The first Notebook has 6 basic Machine Learning algorithms and 3 Deep Learning algorithms, their hyper-parameters tuning and evaluation metrics. The second Notebook has the implemention of BERT (BERTimbau - PT BERT) algorithm (placed in a separate Notebook due to organizational issues and differences in some steps).
+The Classification stage is organized in 2 Jupyter Notebooks, with the relevant steps described in the same. The data file used is the file with the cleaned data returned in the Preprocessing step. The first Notebook has 6 basic Machine Learning algorithms and 3 Deep Learning algorithms, their hyper-parameters tuning and evaluation metrics. The second Notebook has the implemention of BERT (BERTimbau - PT BERT) algorithm (placed in a separate Notebook due to organizational issues and differences in some steps).
 
    - Logistic Regression
    - Linear SVC
@@ -36,3 +36,7 @@ The classification stage is organized in 2 Jupyter Notebooks, with the relevant 
    - Bidirectional Long Short-Term Memory (Bi-LSTM) (with GloVe PT 300D)
 
    - BERTimbau
+
+### 3. Topic Modeling
+
+The Topic Modeling stage is organized in a Jupyter Notebook, with the relevant steps described in the same. The data file used is the file with the cleaned and prepared (for TM) data returned in the Preprocessing step. 
