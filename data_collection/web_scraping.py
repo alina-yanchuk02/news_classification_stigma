@@ -1,8 +1,11 @@
+"""
+Automatic classification of stigmatizing mental illness articles in online news journals - April 2022
+Author: Alina Yanchuk - alinayanchuk@ua.pt
+"""
+
 ## Scraping of HTML pages by url
 
 # -------------- Imports -------------
-
-import json
 
 from utils import try_request
 

@@ -1,11 +1,14 @@
+"""
+Automatic classification of stigmatizing mental illness articles in online news journals - April 2022
+Author: Alina Yanchuk - alinayanchuk@ua.pt
+"""
+
 ### Collect and save relevant data from Arquivo.pt TextSearch API 
 
 
 # -------------- Imports -------------
 
 import json
-
-from utils import try_request
 
 from search import search
 
@@ -17,7 +20,6 @@ import time
 
 import csv
 
-import pandas as pd
 
 # -------------- Main functions ------
     
@@ -27,7 +29,7 @@ def collect():
     urls_to_scrap = {}
 
     terms = ["esquizofrenia", "esquizofrénico", "esquizofrenico", "esquizofrénica", "esquizofrenica", "esquizofrénicas", "esquizofrenicas", "esquizofrénicos", "esquizofrenicos", "esquizofrenicamente", "esquizofrenizar", "psicose", "psicótica", "psicotica", "psicóticas", "psicoticas", "psicótico", "psicotico", "psicóticos", "psicóticos"]
-    journals = ["publico.pt", "www.publico.pt", "jornal.publico.pt", "dossiers.publico.pt", "desporto.publico.pt", "www.publico.clix.pt", "digital.publico.pt", "blogues.publico.pt", "economia.publico.pt", "m.publico.pt", "ultimahora.publico.pt", "observador.pt", "www.dn.pt", "dn.sapo.pt", "www.dn.sapo.pt", "expresso.pt", "aeiou.expresso.pt", "expresso.sapo.pt", "www.correiodamanha.pt", "www.cmjornal.xl.pt", "www.cmjornal.pt", "www.jn.pt", "jn.pt", "jn.sapo.pt", "abola.pt", "www.abola.pt", "abola.pt:80", "visaoonline.clix.pt:80", "visao.clix.pt:80", "aeiou.visao.pt", "visao.sapo.pt", "www.sabado.pt", "www.sabado.pt:80", "www.sabado.xl.pt", "www.sabado.xl.pt:80", "sabado.pt"]
+    journals = ["publico.pt", "www.publico.pt", "jornal.publico.pt", "dossiers.publico.pt", "desporto.publico.pt", "www.publico.clix.pt", "digital.publico.pt", "blogues.publico.pt", "economia.publico.pt", "m.publico.pt", "ultimahora.publico.pt", "observador.pt", "www.dn.pt", "dn.sapo.pt", "www.dn.sapo.pt", "expresso.pt", "aeiou.expresso.pt", "expresso.sapo.pt", "www.correiodamanha.pt", "www.cmjornal.xl.pt", "www.cmjornal.pt", "www.jn.pt", "jn.pt", "jn.sapo.pt", "abola.pt", "www.abola.pt", "abola.pt:80", "aeiou.visao.pt", "visao.sapo.pt", "www.sabado.pt", "www.sabado.xl.pt", "www.sabado.xl.pt:80", "sabado.pt"]
 
     total_urls = 0
 
@@ -88,8 +90,8 @@ def collect():
 
     print("Web scraping took " + str(end_time-start_time) + " seconds.\n\n")
 
-    with open('output_scraping', 'w') as scraping_file: json.dump(data, scraping_file)
-    scraping_file.close()
+    #with open('output_scraping', 'w') as scraping_file: json.dump(data, scraping_file)
+    #scraping_file.close()
     #with open('output_scraping') as scraping_file: data = json.load(scraping_file)
     #scraping_file.close()
 
@@ -170,8 +172,8 @@ def results(data):
     cm = ["www.correiomanha.pt", "www.correiodamanha.pt", "www.cmjornal.xl.pt", "www.cmjornal.pt"]
     jn = ["www.jn.pt", "jn.pt", "jn.sapo.pt"]
     abola = ["abola.pt", "www.abola.pt", "abola.pt:80"]
-    visao = ["visaoonline.clix.pt:80", "visao.clix.pt:80", "aeiou.visao.pt", "visao.sapo.pt"]
-    sabado = ["www.sabado.pt", "www.sabado.pt:80", "www.sabado.xl.pt", "www.sabado.xl.pt:80", "sabado.pt"]
+    visao = ["aeiou.visao.pt", "visao.sapo.pt"]
+    sabado = ["www.sabado.pt", "www.sabado.xl.pt", "www.sabado.xl.pt:80", "sabado.pt"]
 
     publico_count = 0
     observador_count = 0
